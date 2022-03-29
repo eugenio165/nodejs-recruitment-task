@@ -1,14 +1,29 @@
 version: "3.2"
 services:
-  app:
+
+  auth_service:
     command: node src/server.js
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./auth
+      dockerfile: ../Dockerfile
     ports:
-      - published: ${APP_PORT:-3000}
-        target: 3000
+      - ${AUTH_PORT}:3000
     volumes:
-      - .:/app/
+      - ./auth:/app/
+      - /app/node_modules
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+
+  movies_service:
+    command: npm run start:debug
+    build:
+      context: ./movies
+      dockerfile: ../Dockerfile
+    ports:
+      - ${MOVIES_PORT}:3000
+      - 9229:9229
+    volumes:
+      - ./movies:/app/
+      - /app/node_modules
     environment:
       JWT_SECRET: ${JWT_SECRET}
