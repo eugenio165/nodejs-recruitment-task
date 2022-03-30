@@ -1,4 +1,10 @@
 version: "3.2"
+
+networks:
+  movies_backend:
+    name: movies_backend
+    driver: 'bridge'
+
 services:
 
   auth_service:
@@ -25,5 +31,18 @@ services:
     volumes:
       - ./movies:/app/
       - /app/node_modules
+    env_file:
+      - .env
+    networks:
+      - movies_backend
+
+  movies_mongo:
+    image: mongo:5.0.6
+    volumes:
+      - /data/db
     environment:
-      JWT_SECRET: ${JWT_SECRET}
+      MONGO_INITDB_ROOT_USERNAME: ${MOVIES_DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MOVIES_DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MOVIES_DB}
+    networks:
+      - movies_backend
