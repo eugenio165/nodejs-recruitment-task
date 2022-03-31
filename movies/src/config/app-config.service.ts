@@ -23,4 +23,8 @@ export class AppConfigService extends ConfigService {
     }
   }
 
+  get OMDbApiKey() {
+    return this.get<string>('OMDB_API_KEY');
+  }
+
 }
