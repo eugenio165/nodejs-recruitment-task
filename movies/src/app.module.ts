@@ -3,7 +3,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { AppConfigModule } from './config/app-config.module';
-import { AppConfigService } from './config/app-config.service';
+import { MONGOOSE_MODULE_CONSTANTS } from './constants/mongoose.constants';
 import { MongoExceptionFilter } from './core/mongo-exception.filter';
 import { MoviesModule } from './movies/movies.module';
 
@@ -11,17 +11,7 @@ import { MoviesModule } from './movies/movies.module';
   imports: [
     AppConfigModule,
     AuthModule,
-    MongooseModule.forRootAsync({
-      inject: [AppConfigService],
-      useFactory: (cfg: AppConfigService) => {
-        return Promise.resolve({
-          uri: cfg.mongo.uri,
-          dbName: cfg.mongo.db,
-          authSource: 'admin',
-          autoCreate: true,
-        });
-      }
-    }),
+    MongooseModule.forRootAsync(MONGOOSE_MODULE_CONSTANTS),
     MoviesModule,
   ],
   controllers: [],

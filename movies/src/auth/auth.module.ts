@@ -1,18 +1,13 @@
-import { JwtStrategy } from './jwt.strategy';
-import { AppConfigService } from './../config/app-config.service';
-import { JwtModule } from '@nestjs/jwt';
 import { Module } from "@nestjs/common";
+import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { JWT_MODULE_CONSTANTS } from './auth.constants';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
     PassportModule,
-    JwtModule.registerAsync({
-      inject: [AppConfigService],
-      useFactory: (cfg: AppConfigService) => {
-        return { secret: cfg.jwtSecret };
-      },
-    }),
+    JwtModule.registerAsync(JWT_MODULE_CONSTANTS),
   ],
   providers: [JwtStrategy],
   exports: [],

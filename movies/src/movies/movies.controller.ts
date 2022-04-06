@@ -30,7 +30,7 @@ export class MoviesController {
   }
 
   @Get()
-  findAll(
+  findUsersMovies(
     @ReqUser() userData: JwtPayload,
   ) {
     // Obviously would paginate, limit, etc.
